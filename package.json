@@ -1,8 +1,14 @@
 {
   "name": "typed-trigger",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A typed event library for TypeScript/JavaScript.",
-  "keywords": ["emitter", "event", "type", "trigger", "bus"],
+  "keywords": [
+    "emitter",
+    "event",
+    "type",
+    "trigger",
+    "bus"
+  ],
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc --project tsconfig.json",
