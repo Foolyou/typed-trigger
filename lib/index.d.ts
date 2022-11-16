@@ -1,4 +1,4 @@
-export type CommonEventHandlerMap = Record<string, (...args: any[]) => any>;
+export type CommonEventHandlerMap = Record<string, (...args: any[]) => void>;
 type WithStopImmediate<T extends (...args: any[]) => any> = (...args: [...Parameters<T>, () => void]) => ReturnType<T>;
 export declare class TypedTrigger<M extends CommonEventHandlerMap = CommonEventHandlerMap> {
     private _handlerCollection;
