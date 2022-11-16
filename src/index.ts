@@ -23,7 +23,7 @@
  *
  */
 
-export type CommonEventHandlerMap = Record<string, (...args: any[]) => any>
+export type CommonEventHandlerMap = Record<string, (...args: any[]) => void>
 
 type WithStopImmediate<T extends (...args: any[]) => any> = (...args: [...Parameters<T>, () => void]) => ReturnType<T>
 type HandlerCollection<U extends CommonEventHandlerMap, K extends keyof U = keyof U> = Map<K, Set<WithStopImmediate<U[K]>>>
