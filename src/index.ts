@@ -23,29 +23,29 @@
  *
  */
 
-export type CommonEventHandlerMap = Record<string, (...args: any[]) => void>
+export type CommonEventHandlerMap = Record<string, any[]>
 
-type WithStopImmediate<T extends (...args: any[]) => any> = (...args: [...Parameters<T>, () => void]) => ReturnType<T>
-type HandlerCollection<U extends CommonEventHandlerMap, K extends keyof U = keyof U> = Map<K, Set<WithStopImmediate<U[K]>>>
+type GenerateHandlerWithStopImmediate<T extends any[]> = (...args: [...T, () => void]) => void
+type HandlerCollection<U extends CommonEventHandlerMap> = { [K in keyof U]?: Set<GenerateHandlerWithStopImmediate<U[K]>> }
 
 export class TypedTrigger<M extends CommonEventHandlerMap = CommonEventHandlerMap> {
-  private _handlerCollection: HandlerCollection<M> = new Map()
+  private _handlerCollection: HandlerCollection<M> = {}
 
-  on<K extends keyof M> (eventName: K, handler: WithStopImmediate<M[K]>) {
+  on<K extends keyof M> (eventName: K, handler: GenerateHandlerWithStopImmediate<M[K]>) {
     const handlers = this._getHandlersOfEvent(eventName)
     if (handlers) {
       handlers.add(handler)
     }
   }
 
-  off<K extends keyof M> (eventName: K, handler: WithStopImmediate<M[K]>) {
+  off<K extends keyof M> (eventName: K, handler: GenerateHandlerWithStopImmediate<M[K]>) {
     const handlers = this._getHandlersOfEvent(eventName)
     if (handlers) {
       handlers.delete(handler)
     }
   }
 
-  trigger<K extends keyof M> (eventName: K, ...args: Parameters<M[K]>) {
+  trigger<K extends keyof M> (eventName: K, ...args: M[K]) {
     const handlers = this._getHandlersOfEvent(eventName)
     if (handlers) {
       let stopImmediate = false
@@ -66,10 +66,10 @@ export class TypedTrigger<M extends CommonEventHandlerMap = CommonEventHandlerMa
   }
 
   private _getHandlersOfEvent<K extends keyof M> (eventName: K) {
-    if (!this._handlerCollection.has(eventName)) {
-      this._handlerCollection.set(eventName, new Set())
+    if (!this._handlerCollection[eventName]) {
+      this._handlerCollection[eventName] = new Set()
     }
 
-    return this._handlerCollection.get(eventName)
+    return this._handlerCollection[eventName]
   }
 }
