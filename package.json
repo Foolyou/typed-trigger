@@ -1,0 +1,25 @@
+{
+  "name": "typed-trigger",
+  "version": "0.1.0",
+  "description": "A typed event library for TypeScript/JavaScript.",
+  "keywords": ["emitter", "event", "type", "trigger", "bus"],
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "version": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Foolyou/typed-trigger.git"
+  },
+  "author": "chen-an@outlook.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Foolyou/typed-trigger/issues"
+  },
+  "homepage": "https://github.com/Foolyou/typed-trigger#readme",
+  "devDependencies": {
+    "typescript": "^4.9.3"
+  }
+}
