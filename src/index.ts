@@ -23,9 +23,10 @@
  *
  */
 
-export type CommonEventHandlerMap = Record<string, any[]>
-
-type GenerateHandlerWithStopImmediate<T extends any[]> = (...args: [...T, () => void]) => void
+type ParametersOrFullFunction = any[] | ((...args: any[]) => void)
+type GetParameters<T extends ParametersOrFullFunction> = T extends ((...args: any[]) => void) ? Parameters<T> : T
+type CommonEventHandlerMap = Record<string, ParametersOrFullFunction>
+type GenerateHandlerWithStopImmediate<T extends ParametersOrFullFunction> = (...args: [...GetParameters<T>, () => void]) => void
 type HandlerCollection<U extends CommonEventHandlerMap> = { [K in keyof U]?: Set<GenerateHandlerWithStopImmediate<U[K]>> }
 
 export class TypedTrigger<M extends CommonEventHandlerMap = CommonEventHandlerMap> {
@@ -45,7 +46,7 @@ export class TypedTrigger<M extends CommonEventHandlerMap = CommonEventHandlerMa
     }
   }
 
-  trigger<K extends keyof M> (eventName: K, ...args: M[K]) {
+  trigger<K extends keyof M> (eventName: K, ...args: GetParameters<M[K]>) {
     const handlers = this._getHandlersOfEvent(eventName)
     if (handlers) {
       let stopImmediate = false
